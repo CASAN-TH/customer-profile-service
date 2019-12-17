@@ -76,7 +76,7 @@ exports.getByID = function (req, res, next, id) {
 };
 
 exports.getByUserID = function (req, res, next, id) {
-    Customerprofile.findOne({ createby: { username: id } }, function (err, data) {
+    Customerprofile.findOne({ u_id: id }, function (err, data) {
         if (err) {
             return res.status(400).send({
                 status: 400,
@@ -102,6 +102,7 @@ exports.reternUserId = function (req, res) {
             "personwithcardimaged": {
                 "url": ""
             },
+            "u_id": "",
             "citizen_id": "",
             "citizenback_id": "",
             "name": "",

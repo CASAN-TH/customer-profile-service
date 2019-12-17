@@ -25,6 +25,7 @@ describe('Customerprofile CRUD routes tests', function () {
             "personwithcardimaged": {
                 "url": "PersonWithCard.jpg"
             },
+            "u_id": "0992436806",
             "citizen_id": "1103000082933",
             "citizenback_id": "meo-12345678",
             "name": "Nutshapon",
@@ -301,7 +302,7 @@ describe('Customerprofile CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 request(app)
-                    .get('/api/cusprofilesbyuserid/' + resp.data.createby.username)
+                    .get('/api/cusprofilesbyuserid/' + resp.data.u_id)
                     .set('Authorization', 'Bearer ' + token)
                     .expect(200)
                     .end(function (err, res) {
