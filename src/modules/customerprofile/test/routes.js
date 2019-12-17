@@ -16,7 +16,24 @@ describe('Customerprofile CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'name'
+            "frontcardimaged": {
+                "url": "FrontCard.jpg"
+            },
+            "backcardimaged": {
+                "url": "BackCard.jpg"
+            },
+            "personwithcardimaged": {
+                "url": "PersonWithCard.jpg"
+            },
+            "citizen_id": "1103000082933",
+            "citizenback_id": "meo-12345678",
+            "name": "Nutshapon",
+            "lastname": "lertlaosakunporn",
+            "gender": "ชาย",
+            "birthdate": "2019-09-20",
+            "addressbycard": "13/301",
+            "email": "nutnut@gamil.com",
+            "address": "13/301 kukot lumlukka"
         };
         credentials = {
             username: 'username',
@@ -32,18 +49,18 @@ describe('Customerprofile CRUD routes tests', function () {
         done();
     });
 
-    it('should be Customerprofile get use token', (done)=>{
+    it('should be Customerprofile get use token', (done) => {
         request(app)
-        .get('/api/customerprofiles')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end((err, res)=>{
-            if (err) {
-                return done(err);
-            }
-            var resp = res.body;
-            done();
-        });
+            .get('/api/customerprofiles')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                done();
+            });
     });
 
     it('should be Customerprofile get by id', function (done) {
@@ -75,7 +92,7 @@ describe('Customerprofile CRUD routes tests', function () {
 
     });
 
-    it('should be Customerprofile post use token', (done)=>{
+    it('should be Customerprofile post use token', (done) => {
         request(app)
             .post('/api/customerprofiles')
             .set('Authorization', 'Bearer ' + token)
@@ -86,6 +103,7 @@ describe('Customerprofile CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
+                console.log(resp.data)
                 assert.equal(resp.data.name, mockup.name);
                 done();
             });
@@ -144,15 +162,15 @@ describe('Customerprofile CRUD routes tests', function () {
 
     });
 
-    it('should be customerprofile get not use token', (done)=>{
+    it('should be customerprofile get not use token', (done) => {
         request(app)
-        .get('/api/customerprofiles')
-        .expect(403)
-        .expect({
-            status: 403,
-            message: 'User is not authorized'
-        })
-        .end(done);
+            .get('/api/customerprofiles')
+            .expect(403)
+            .expect({
+                status: 403,
+                message: 'User is not authorized'
+            })
+            .end(done);
     });
 
     it('should be customerprofile post not use token', function (done) {
