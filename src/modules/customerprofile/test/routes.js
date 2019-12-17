@@ -36,10 +36,10 @@ describe('Customerprofile CRUD routes tests', function () {
             "address": "13/301 kukot lumlukka"
         };
         credentials = {
-            username: 'username',
+            username: '0992436806',
             password: 'password',
-            firstname: 'first name',
-            lastname: 'last name',
+            firstname: 'unknow',
+            lastname: 'unknow',
             email: 'test@email.com',
             roles: ['user']
         };
@@ -85,7 +85,18 @@ describe('Customerprofile CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
+                        assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
+                        assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
+                        assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                        assert.equal(resp.data.citizen_id, mockup.citizen_id);
+                        assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
                         assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.lastname, mockup.lastname);
+                        assert.equal(resp.data.gender, mockup.gender);
+                        assert.equal(resp.data.birthdate, mockup.birthdate);
+                        assert.equal(resp.data.addressbycard, mockup.addressbycard);
+                        assert.equal(resp.data.email, mockup.email);
+                        assert.equal(resp.data.address, mockup.address);
                         done();
                     });
             });
@@ -103,8 +114,19 @@ describe('Customerprofile CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                console.log(resp.data)
+                // console.log(resp.data)
+                assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
+                assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
+                assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                assert.equal(resp.data.citizen_id, mockup.citizen_id);
+                assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
                 assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.data.lastname, mockup.lastname);
+                assert.equal(resp.data.gender, mockup.gender);
+                assert.equal(resp.data.birthdate, mockup.birthdate);
+                assert.equal(resp.data.addressbycard, mockup.addressbycard);
+                assert.equal(resp.data.email, mockup.email);
+                assert.equal(resp.data.address, mockup.address);
                 done();
             });
     });
@@ -122,7 +144,24 @@ describe('Customerprofile CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    "frontcardimaged": {
+                        "url": "updatefront.jpg"
+                    },
+                    "backcardimaged": {
+                        "url": "updateback.jpg"
+                    },
+                    "personwithcardimaged": {
+                        "url": "updateperson.jpg"
+                    },
+                    "citizen_id": "1103000082933 update",
+                    "citizenback_id": "meo-12345678 update",
+                    "name": "Nutshapon update",
+                    "lastname": "lertlaosakunporn update",
+                    "gender": "ชาย update",
+                    "birthdate": "2019-09-20 update",
+                    "addressbycard": "13/301 update",
+                    "email": "nutnut@gamil.com update",
+                    "address": "13/301 kukot lumlukka update"
                 }
                 request(app)
                     .put('/api/customerprofiles/' + resp.data._id)
@@ -134,7 +173,18 @@ describe('Customerprofile CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
+                        assert.equal(resp.data.frontcardimaged.url, update.frontcardimaged.url);
+                        assert.equal(resp.data.backcardimaged.url, update.backcardimaged.url);
+                        assert.equal(resp.data.personwithcardimaged.url, update.personwithcardimaged.url);
+                        assert.equal(resp.data.citizen_id, update.citizen_id);
+                        assert.equal(resp.data.citizenback_id, update.citizenback_id);
                         assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.data.lastname, update.lastname);
+                        assert.equal(resp.data.gender, update.gender);
+                        assert.equal(resp.data.birthdate, update.birthdate);
+                        assert.equal(resp.data.addressbycard, update.addressbycard);
+                        assert.equal(resp.data.email, update.email);
+                        assert.equal(resp.data.address, update.address);
                         done();
                     });
             });
@@ -237,6 +287,82 @@ describe('Customerprofile CRUD routes tests', function () {
                     .end(done);
             });
 
+    });
+
+    it('should be have data and get data by UserId', function (done) {
+        request(app)
+            .post('/api/customerprofiles')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                request(app)
+                    .get('/api/cusprofilesbyuserid/' + resp.data.createby.username)
+                    .set('Authorization', 'Bearer ' + token)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
+                        assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
+                        assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                        assert.equal(resp.data.citizen_id, mockup.citizen_id);
+                        assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
+                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.lastname, mockup.lastname);
+                        assert.equal(resp.data.gender, mockup.gender);
+                        assert.equal(resp.data.birthdate, mockup.birthdate);
+                        assert.equal(resp.data.addressbycard, mockup.addressbycard);
+                        assert.equal(resp.data.email, mockup.email);
+                        assert.equal(resp.data.address, mockup.address);
+                        done();
+                    });
+            });
+    });
+
+    it('should be not have data then get data blank', function (done) {
+        request(app)
+            .post('/api/customerprofiles')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                request(app)
+                    .get('/api/cusprofilesbyuserid/' + '123456789')
+                    .set('Authorization', 'Bearer ' + token)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.frontcardimaged.url, "");
+                        assert.equal(resp.data.backcardimaged.url, "");
+                        assert.equal(resp.data.personwithcardimaged.url, "");
+                        assert.equal(resp.data.citizen_id, "");
+                        assert.equal(resp.data.citizenback_id, "");
+                        assert.equal(resp.data.name, "");
+                        assert.equal(resp.data.lastname, "");
+                        assert.equal(resp.data.gender, "");
+                        assert.equal(resp.data.birthdate, "");
+                        assert.equal(resp.data.addressbycard, "");
+                        assert.equal(resp.data.email, "");
+                        assert.equal(resp.data.address, "");
+                        done();
+                    });
+            });
     });
 
     afterEach(function (done) {

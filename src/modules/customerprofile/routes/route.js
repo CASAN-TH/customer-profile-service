@@ -14,7 +14,11 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
+    app.route('/api/cusprofilesbyuserid/:customerprofileUserId')
+        .get(controller.reternUserId)
+
     app.param('customerprofileId', controller.getByID);
+    app.param('customerprofileUserId', controller.getByUserID);
 
     /**
      * Message Queue
