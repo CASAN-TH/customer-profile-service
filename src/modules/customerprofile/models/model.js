@@ -26,41 +26,35 @@ var CustomerprofileSchema = new Schema({
             }
         }
     },
+    u_id: {
+        type: String
+    },
     citizen_id: {
-        type: String,
-        required: 'Please fill a Customerprofile citizen_id',
+        type: String
     },
     citizenback_id: {
-        type: String,
-        required: 'Please fill a Customerprofile citizenback_id',
+        type: String
     },
     name: {
-        type: String,
-        required: 'Please fill a Customerprofile name'
+        type: String
     },
     lastname: {
-        type: String,
-        required: 'Please fill a Customerprofile lastname',
+        type: String
     },
     gender: {
-        type: String,
-        required: 'Please fill a Customerprofile gender',
+        type: String
     },
     birthdate: {
-        type: String,
-        required: 'Please fill a Customerprofile birthdate',
+        type: String
     },
     addressbycard: {
-        type: String,
-        required: 'Please fill a Customerprofile addressbycard',
+        type: String
     },
     email: {
-        type: String,
-        required: 'Please fill a Customerprofile email',
+        type: String
     },
     address: {
-        type: String,
-        required: 'Please fill a Customerprofile address',
+        type: String
     },
     created: {
         type: Date,
