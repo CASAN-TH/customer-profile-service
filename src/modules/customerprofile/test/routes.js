@@ -311,6 +311,7 @@ describe('Customerprofile CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
+                        assert.equal(resp.data.u_id, mockup.u_id)
                         assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
                         assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
                         assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
@@ -340,41 +341,56 @@ describe('Customerprofile CRUD routes tests', function () {
         token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
             expiresIn: 2 * 60 * 60 * 1000
         });
-        request(app)
-            .post('/api/customerprofiles')
-            .set('Authorization', 'Bearer ' + token)
-            .send(mockup)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err);
-                }
-                var resp = res.body;
-                request(app)
-                    .get('/api/cusprofilesbyuserid')
-                    .set('Authorization', 'Bearer ' + token)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err);
-                        }
-                        var resp = res.body;
-                        assert.equal(resp.status, 200);
-                        assert.equal(resp.data.frontcardimaged.url, "");
-                        assert.equal(resp.data.backcardimaged.url, "");
-                        assert.equal(resp.data.personwithcardimaged.url, "");
-                        assert.equal(resp.data.citizen_id, "");
-                        assert.equal(resp.data.citizenback_id, "");
-                        assert.equal(resp.data.name, "");
-                        assert.equal(resp.data.lastname, "");
-                        assert.equal(resp.data.gender, "");
-                        assert.equal(resp.data.birthdate, "");
-                        assert.equal(resp.data.addressbycard, "");
-                        assert.equal(resp.data.email, "");
-                        assert.equal(resp.data.address, "");
-                        done();
-                    });
-            });
+
+        var cusProfile1 = new Customerprofile({
+            "frontcardimaged": {
+                "url": "FrontCard.jpg"
+            },
+            "backcardimaged": {
+                "url": "BackCard.jpg"
+            },
+            "personwithcardimaged": {
+                "url": "PersonWithCard.jpg"
+            },
+            "u_id": "0992436806",
+            "citizen_id": "1103000082933",
+            "citizenback_id": "meo-12345678",
+            "name": "Nutshapon",
+            "lastname": "lertlaosakunporn",
+            "gender": "ชาย",
+            "birthdate": "2019-09-20",
+            "addressbycard": "13/301",
+            "email": "nutnut@gamil.com",
+            "address": "13/301 kukot lumlukka"
+        });
+
+        cusProfile1.save(function (err, data) {
+            request(app)
+                .get('/api/cusprofilesbyuserid')
+                .set('Authorization', 'Bearer ' + token)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    var resp = res.body;
+                    assert.equal(resp.status, 200);
+                    assert.equal(resp.data.u_id, "")
+                    assert.equal(resp.data.frontcardimaged.url, "");
+                    assert.equal(resp.data.backcardimaged.url, "");
+                    assert.equal(resp.data.personwithcardimaged.url, "");
+                    assert.equal(resp.data.citizen_id, "");
+                    assert.equal(resp.data.citizenback_id, "");
+                    assert.equal(resp.data.name, "");
+                    assert.equal(resp.data.lastname, "");
+                    assert.equal(resp.data.gender, "");
+                    assert.equal(resp.data.birthdate, "");
+                    assert.equal(resp.data.addressbycard, "");
+                    assert.equal(resp.data.email, "");
+                    assert.equal(resp.data.address, "");
+                    done();
+                });
+        })
     });
 
     afterEach(function (done) {
