@@ -302,7 +302,7 @@ describe('Customerprofile CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 request(app)
-                    .get('/api/cusprofilesbyuserid/' + resp.data.u_id)
+                    .get('/api/cusprofilesbyuserid')
                     .set('Authorization', 'Bearer ' + token)
                     .expect(200)
                     .end(function (err, res) {
@@ -329,6 +329,17 @@ describe('Customerprofile CRUD routes tests', function () {
     });
 
     it('should be not have data then get data blank', function (done) {
+        credentials = {
+            username: '0992436801',
+            password: 'password',
+            firstname: 'unknow',
+            lastname: 'unknow',
+            email: 'test@email.com',
+            roles: ['user']
+        };
+        token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
+            expiresIn: 2 * 60 * 60 * 1000
+        });
         request(app)
             .post('/api/customerprofiles')
             .set('Authorization', 'Bearer ' + token)
@@ -340,7 +351,7 @@ describe('Customerprofile CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 request(app)
-                    .get('/api/cusprofilesbyuserid/' + '123456789')
+                    .get('/api/cusprofilesbyuserid')
                     .set('Authorization', 'Bearer ' + token)
                     .expect(200)
                     .end(function (err, res) {

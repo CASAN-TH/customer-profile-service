@@ -25,7 +25,7 @@ exports.invokeRolesPolicies = function() {
           permissions: "*"
         },
         {
-          resources: "/api/cusprofilesbyuserid/:customerprofileUserId",
+          resources: "/api/cusprofilesbyuserid",
           permissions: "*"
         }
       ]

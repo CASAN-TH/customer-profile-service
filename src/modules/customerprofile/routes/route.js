@@ -14,11 +14,11 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
-    app.route('/api/cusprofilesbyuserid/:customerprofileUserId').all(policy.isAllowed)
-        .get(controller.reternUserId)
+    app.route('/api/cusprofilesbyuserid').all(policy.isAllowed)
+        .get(controller.getByUserID, controller.reternUserId)
 
     app.param('customerprofileId', controller.getByID);
-    app.param('customerprofileUserId', controller.getByUserID);
+    // app.param('customerprofileUserId', controller.getByUserID);
 
     /**
      * Message Queue

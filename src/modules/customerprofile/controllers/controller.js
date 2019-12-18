@@ -75,8 +75,8 @@ exports.getByID = function (req, res, next, id) {
     });
 };
 
-exports.getByUserID = function (req, res, next, id) {
-    Customerprofile.findOne({ u_id: id }, function (err, data) {
+exports.getByUserID = function (req, res, next) {
+    Customerprofile.findOne({ u_id: req.user.username }, function (err, data) {
         if (err) {
             return res.status(400).send({
                 status: 400,
