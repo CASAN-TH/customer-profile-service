@@ -34,6 +34,7 @@ exports.getList = function (req, res) {
 exports.create = function (req, res) {
     var newCustomerprofile = new Customerprofile(req.body);
     newCustomerprofile.createby = req.user;
+    newCustomerprofile.u_id = req.user.username;
     newCustomerprofile.save(function (err, data) {
         if (err) {
             return res.status(400).send({
