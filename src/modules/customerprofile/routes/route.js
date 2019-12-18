@@ -14,7 +14,7 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
-    app.route('/api/cusprofilesbyuserid/:customerprofileUserId')
+    app.route('/api/cusprofilesbyuserid/:customerprofileUserId').all(policy.isAllowed)
         .get(controller.reternUserId)
 
     app.param('customerprofileId', controller.getByID);
