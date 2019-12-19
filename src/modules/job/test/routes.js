@@ -134,24 +134,24 @@ describe('Job CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 assert.equal(resp.status, 200);
-                        assert.equal(resp.data.u_id, credentials.username);
-                        assert.equal(resp.data.jobdata.jobtype, mockup.jobdata.jobtype);
-                        assert.equal(resp.data.jobdata.student.univarsal, mockup.jobdata.student.univarsal);
-                        assert.equal(resp.data.jobdata.student.faculty, mockup.jobdata.student.faculty);
-                        assert.equal(resp.data.jobdata.student.majors, mockup.jobdata.student.majors);
-                        assert.equal(resp.data.jobdata.student.degree, mockup.jobdata.student.degree);
-                        assert.equal(resp.data.jobdata.student.level, mockup.jobdata.student.level);
-                        assert.equal(resp.data.jobdata.student.studentimage[0].url, mockup.jobdata.student.studentimage[0].url);
-                        assert.equal(resp.data.jobdata.other.job, mockup.jobdata.other.job);
-                        assert.equal(resp.data.jobdata.other.companyname, mockup.jobdata.other.companyname);
-                        assert.equal(resp.data.jobdata.other.companytel, mockup.jobdata.other.companytel);
-                        assert.equal(resp.data.jobdata.other.companylocation, mockup.jobdata.other.companylocation);
-                        assert.equal(resp.data.jobdata.other.companylocationdetail, mockup.jobdata.other.companylocationdetail);
-                        assert.equal(resp.data.jobdata.other.experience, mockup.jobdata.other.experience);
-                        assert.equal(resp.data.jobdata.other.position, mockup.jobdata.other.position);
-                        assert.equal(resp.data.jobdata.other.degree, mockup.jobdata.other.degree);
-                        assert.equal(resp.data.jobdata.other.salary, mockup.jobdata.other.salary);
-                        assert.equal(resp.data.jobdata.other.otherimage[0].url, mockup.jobdata.other.otherimage[0].url);
+                assert.equal(resp.data.u_id, credentials.username);
+                assert.equal(resp.data.jobdata.jobtype, mockup.jobdata.jobtype);
+                assert.equal(resp.data.jobdata.student.univarsal, mockup.jobdata.student.univarsal);
+                assert.equal(resp.data.jobdata.student.faculty, mockup.jobdata.student.faculty);
+                assert.equal(resp.data.jobdata.student.majors, mockup.jobdata.student.majors);
+                assert.equal(resp.data.jobdata.student.degree, mockup.jobdata.student.degree);
+                assert.equal(resp.data.jobdata.student.level, mockup.jobdata.student.level);
+                assert.equal(resp.data.jobdata.student.studentimage[0].url, mockup.jobdata.student.studentimage[0].url);
+                assert.equal(resp.data.jobdata.other.job, mockup.jobdata.other.job);
+                assert.equal(resp.data.jobdata.other.companyname, mockup.jobdata.other.companyname);
+                assert.equal(resp.data.jobdata.other.companytel, mockup.jobdata.other.companytel);
+                assert.equal(resp.data.jobdata.other.companylocation, mockup.jobdata.other.companylocation);
+                assert.equal(resp.data.jobdata.other.companylocationdetail, mockup.jobdata.other.companylocationdetail);
+                assert.equal(resp.data.jobdata.other.experience, mockup.jobdata.other.experience);
+                assert.equal(resp.data.jobdata.other.position, mockup.jobdata.other.position);
+                assert.equal(resp.data.jobdata.other.degree, mockup.jobdata.other.degree);
+                assert.equal(resp.data.jobdata.other.salary, mockup.jobdata.other.salary);
+                assert.equal(resp.data.jobdata.other.otherimage[0].url, mockup.jobdata.other.otherimage[0].url);
                 done();
             });
     });
@@ -332,6 +332,131 @@ describe('Job CRUD routes tests', function () {
                     .end(done);
             });
 
+    });
+
+    it('should be have Job data and get data by UserId', function (done) {
+        request(app)
+            .post('/api/jobs')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                request(app)
+                    .get('/api/jobbyuserid')
+                    .set('Authorization', 'Bearer ' + token)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.u_id, credentials.username);
+                        assert.equal(resp.data.jobdata.jobtype, mockup.jobdata.jobtype);
+                        assert.equal(resp.data.jobdata.student.univarsal, mockup.jobdata.student.univarsal);
+                        assert.equal(resp.data.jobdata.student.faculty, mockup.jobdata.student.faculty);
+                        assert.equal(resp.data.jobdata.student.majors, mockup.jobdata.student.majors);
+                        assert.equal(resp.data.jobdata.student.degree, mockup.jobdata.student.degree);
+                        assert.equal(resp.data.jobdata.student.level, mockup.jobdata.student.level);
+                        assert.equal(resp.data.jobdata.student.studentimage[0].url, mockup.jobdata.student.studentimage[0].url);
+                        assert.equal(resp.data.jobdata.other.job, mockup.jobdata.other.job);
+                        assert.equal(resp.data.jobdata.other.companyname, mockup.jobdata.other.companyname);
+                        assert.equal(resp.data.jobdata.other.companytel, mockup.jobdata.other.companytel);
+                        assert.equal(resp.data.jobdata.other.companylocation, mockup.jobdata.other.companylocation);
+                        assert.equal(resp.data.jobdata.other.companylocationdetail, mockup.jobdata.other.companylocationdetail);
+                        assert.equal(resp.data.jobdata.other.experience, mockup.jobdata.other.experience);
+                        assert.equal(resp.data.jobdata.other.position, mockup.jobdata.other.position);
+                        assert.equal(resp.data.jobdata.other.degree, mockup.jobdata.other.degree);
+                        assert.equal(resp.data.jobdata.other.salary, mockup.jobdata.other.salary);
+                        assert.equal(resp.data.jobdata.other.otherimage[0].url, mockup.jobdata.other.otherimage[0].url);
+                        done();
+                    });
+            });
+    });
+
+    it('should be not have Job data then get data blank', function (done) {
+        credentials = {
+            username: '09924368022233',
+            password: 'password',
+            firstname: 'unknow',
+            lastname: 'unknow',
+            email: 'test@email.com',
+            roles: ['user']
+        };
+        token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
+            expiresIn: 2 * 60 * 60 * 1000
+        });
+
+        var job1 = new Job({
+            "u_id": "099243680000",
+            "jobdata": {
+                "jobtype": "other",
+                "student": {
+                    "univarsal": "",
+                    "faculty": "",
+                    "majors": "",
+                    "degree": "",
+                    "level": "",
+                    "studentimage": [
+                        {
+                            "url": ""
+                        }
+                    ]
+                },
+                "other": {
+                    "job": "พนักงานไอที",
+                    "companyname": "CASAN",
+                    "companytel": "0233366897",
+                    "companylocation": "ปทุมธานี",
+                    "companylocationdetail": "หมู่บ้านคาซ่า",
+                    "experience": "4",
+                    "position": "developer",
+                    "degree": "super",
+                    "salary": "14000",
+                    "otherimage": [
+                        {
+                            "url": "test.jpg"
+                        }
+                    ]
+                }
+            }
+        });
+
+        job1.save(function (err, data) {
+            request(app)
+                .get('/api/jobbyuserid')
+                .set('Authorization', 'Bearer ' + token)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    var resp = res.body;
+                    assert.equal(resp.data.u_id, "");
+                    assert.equal(resp.data.jobdata.jobtype, "");
+                    assert.equal(resp.data.jobdata.student.univarsal, "");
+                    assert.equal(resp.data.jobdata.student.faculty, "");
+                    assert.equal(resp.data.jobdata.student.majors, "");
+                    assert.equal(resp.data.jobdata.student.degree, "");
+                    assert.equal(resp.data.jobdata.student.level, "");
+                    assert.equal(resp.data.jobdata.student.studentimage[0].url, "");
+                    assert.equal(resp.data.jobdata.other.job, "");
+                    assert.equal(resp.data.jobdata.other.companyname, "");
+                    assert.equal(resp.data.jobdata.other.companytel, "");
+                    assert.equal(resp.data.jobdata.other.companylocation, "");
+                    assert.equal(resp.data.jobdata.other.companylocationdetail, "");
+                    assert.equal(resp.data.jobdata.other.experience, "");
+                    assert.equal(resp.data.jobdata.other.position, "");
+                    assert.equal(resp.data.jobdata.other.degree, "");
+                    assert.equal(resp.data.jobdata.other.salary, "");
+                    assert.equal(resp.data.jobdata.other.otherimage[0].url, "");
+                    done();
+                });
+        })
     });
 
     afterEach(function (done) {

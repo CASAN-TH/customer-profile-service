@@ -16,23 +16,23 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-        Job.find({}, {}, query, function (err, datas) {
-            if (err) {
-                return res.status(400).send({
-                    status: 400,
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp({
-                    status: 200,
-                    data: datas
-                });
-            };
-        });
+    Job.find({}, {}, query, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: datas
+            });
+        };
+    });
 };
 
 exports.create = function (req, res) {
-    var newJob = new Job (req.body);
+    var newJob = new Job(req.body);
     newJob.createby = req.user;
     newJob.u_id = req.user.username;
     newJob.save(function (err, data) {
@@ -74,6 +74,60 @@ exports.getByID = function (req, res, next, id) {
             next();
         };
     });
+};
+
+exports.getByUserId = function (req, res, next) {
+    Job.findOne({ u_id: req.user.username }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            req.data = data;
+            next();
+        }
+    })
+};
+
+exports.returnData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.data ? req.data : {
+            "u_id": "",
+            "jobdata": {
+                "jobtype": "",
+                "student": {
+                    "univarsal": "",
+                    "faculty": "",
+                    "majors": "",
+                    "degree": "",
+                    "level": "",
+                    "studentimage": [
+                        {
+                            "url": ""
+                        }
+                    ]
+                },
+                "other": {
+                    "job": "",
+                    "companyname": "",
+                    "companytel": "",
+                    "companylocation": "",
+                    "companylocationdetail": "",
+                    "experience": "",
+                    "position": "",
+                    "degree": "",
+                    "salary": "",
+                    "otherimage": [
+                        {
+                            "url": ""
+                        }
+                    ]
+                }
+            }
+        }
+    })
 };
 
 exports.read = function (req, res) {

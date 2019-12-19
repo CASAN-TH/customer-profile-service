@@ -14,6 +14,9 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
+    app.route('/api/jobbyuserid')
+        .get(controller.getByUserId, controller.returnData)
+
     app.param('jobId', controller.getByID);
 
     /**
@@ -24,6 +27,6 @@ module.exports = function (app) {
      */
     // mq.consume('exchange', 'qname', 'keymsg', (msg)=>{
     //     console.log(JSON.parse(msg.content));
-        
+
     // });
 }
