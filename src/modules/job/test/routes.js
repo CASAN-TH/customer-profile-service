@@ -16,10 +16,40 @@ describe('Job CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'name'
+            "jobdata": {
+                "jobtype": "other",
+                "student": {
+                    "univarsal": "",
+                    "faculty": "",
+                    "majors": "",
+                    "degree": "",
+                    "level": "",
+                    "studentimage": [
+                        {
+                            "url": ""
+                        }
+                    ]
+                },
+                "other": {
+                    "job": "พนักงานไอที",
+                    "companyname": "CASAN",
+                    "companytel": "0233366897",
+                    "companylocation": "ปทุมธานี",
+                    "companylocationdetail": "หมู่บ้านคาซ่า",
+                    "experience": "4",
+                    "position": "developer",
+                    "degree": "super",
+                    "salary": "14000",
+                    "otherimage": [
+                        {
+                            "url": "test.jpg"
+                        }
+                    ]
+                }
+            }
         };
         credentials = {
-            username: 'username',
+            username: '0992436806',
             password: 'password',
             firstname: 'first name',
             lastname: 'last name',
@@ -32,18 +62,18 @@ describe('Job CRUD routes tests', function () {
         done();
     });
 
-    it('should be Job get use token', (done)=>{
+    it('should be Job get use token', (done) => {
         request(app)
-        .get('/api/jobs')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end((err, res)=>{
-            if (err) {
-                return done(err);
-            }
-            var resp = res.body;
-            done();
-        });
+            .get('/api/jobs')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                done();
+            });
     });
 
     it('should be Job get by id', function (done) {
@@ -68,14 +98,31 @@ describe('Job CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
-                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.u_id, credentials.username);
+                        assert.equal(resp.data.jobdata.jobtype, mockup.jobdata.jobtype);
+                        assert.equal(resp.data.jobdata.student.univarsal, mockup.jobdata.student.univarsal);
+                        assert.equal(resp.data.jobdata.student.faculty, mockup.jobdata.student.faculty);
+                        assert.equal(resp.data.jobdata.student.majors, mockup.jobdata.student.majors);
+                        assert.equal(resp.data.jobdata.student.degree, mockup.jobdata.student.degree);
+                        assert.equal(resp.data.jobdata.student.level, mockup.jobdata.student.level);
+                        assert.equal(resp.data.jobdata.student.studentimage[0].url, mockup.jobdata.student.studentimage[0].url);
+                        assert.equal(resp.data.jobdata.other.job, mockup.jobdata.other.job);
+                        assert.equal(resp.data.jobdata.other.companyname, mockup.jobdata.other.companyname);
+                        assert.equal(resp.data.jobdata.other.companytel, mockup.jobdata.other.companytel);
+                        assert.equal(resp.data.jobdata.other.companylocation, mockup.jobdata.other.companylocation);
+                        assert.equal(resp.data.jobdata.other.companylocationdetail, mockup.jobdata.other.companylocationdetail);
+                        assert.equal(resp.data.jobdata.other.experience, mockup.jobdata.other.experience);
+                        assert.equal(resp.data.jobdata.other.position, mockup.jobdata.other.position);
+                        assert.equal(resp.data.jobdata.other.degree, mockup.jobdata.other.degree);
+                        assert.equal(resp.data.jobdata.other.salary, mockup.jobdata.other.salary);
+                        assert.equal(resp.data.jobdata.other.otherimage[0].url, mockup.jobdata.other.otherimage[0].url);
                         done();
                     });
             });
 
     });
 
-    it('should be Job post use token', (done)=>{
+    it('should be Job post use token', (done) => {
         request(app)
             .post('/api/jobs')
             .set('Authorization', 'Bearer ' + token)
@@ -86,7 +133,25 @@ describe('Job CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.status, 200);
+                        assert.equal(resp.data.u_id, credentials.username);
+                        assert.equal(resp.data.jobdata.jobtype, mockup.jobdata.jobtype);
+                        assert.equal(resp.data.jobdata.student.univarsal, mockup.jobdata.student.univarsal);
+                        assert.equal(resp.data.jobdata.student.faculty, mockup.jobdata.student.faculty);
+                        assert.equal(resp.data.jobdata.student.majors, mockup.jobdata.student.majors);
+                        assert.equal(resp.data.jobdata.student.degree, mockup.jobdata.student.degree);
+                        assert.equal(resp.data.jobdata.student.level, mockup.jobdata.student.level);
+                        assert.equal(resp.data.jobdata.student.studentimage[0].url, mockup.jobdata.student.studentimage[0].url);
+                        assert.equal(resp.data.jobdata.other.job, mockup.jobdata.other.job);
+                        assert.equal(resp.data.jobdata.other.companyname, mockup.jobdata.other.companyname);
+                        assert.equal(resp.data.jobdata.other.companytel, mockup.jobdata.other.companytel);
+                        assert.equal(resp.data.jobdata.other.companylocation, mockup.jobdata.other.companylocation);
+                        assert.equal(resp.data.jobdata.other.companylocationdetail, mockup.jobdata.other.companylocationdetail);
+                        assert.equal(resp.data.jobdata.other.experience, mockup.jobdata.other.experience);
+                        assert.equal(resp.data.jobdata.other.position, mockup.jobdata.other.position);
+                        assert.equal(resp.data.jobdata.other.degree, mockup.jobdata.other.degree);
+                        assert.equal(resp.data.jobdata.other.salary, mockup.jobdata.other.salary);
+                        assert.equal(resp.data.jobdata.other.otherimage[0].url, mockup.jobdata.other.otherimage[0].url);
                 done();
             });
     });
@@ -104,7 +169,37 @@ describe('Job CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    "jobdata": {
+                        "jobtype": "other",
+                        "student": {
+                            "univarsal": "update",
+                            "faculty": "update",
+                            "majors": "update",
+                            "degree": "update",
+                            "level": "update",
+                            "studentimage": [
+                                {
+                                    "url": "update.jpg"
+                                }
+                            ]
+                        },
+                        "other": {
+                            "job": "พนักงานไอที update",
+                            "companyname": "CASAN",
+                            "companytel": "0233366897 update",
+                            "companylocation": "ปทุมธานี update",
+                            "companylocationdetail": "หมู่บ้านคาซ่า",
+                            "experience": "4 update",
+                            "position": "developer update",
+                            "degree": "super update",
+                            "salary": "14000",
+                            "otherimage": [
+                                {
+                                    "url": "testupdate.jpg"
+                                }
+                            ]
+                        }
+                    }
                 }
                 request(app)
                     .put('/api/jobs/' + resp.data._id)
@@ -116,7 +211,25 @@ describe('Job CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.u_id, credentials.username);
+                        assert.equal(resp.data.jobdata.jobtype, update.jobdata.jobtype);
+                        assert.equal(resp.data.jobdata.student.univarsal, update.jobdata.student.univarsal);
+                        assert.equal(resp.data.jobdata.student.faculty, update.jobdata.student.faculty);
+                        assert.equal(resp.data.jobdata.student.majors, update.jobdata.student.majors);
+                        assert.equal(resp.data.jobdata.student.degree, update.jobdata.student.degree);
+                        assert.equal(resp.data.jobdata.student.level, update.jobdata.student.level);
+                        assert.equal(resp.data.jobdata.student.studentimage[0].url, update.jobdata.student.studentimage[0].url);
+                        assert.equal(resp.data.jobdata.other.job, update.jobdata.other.job);
+                        assert.equal(resp.data.jobdata.other.companyname, update.jobdata.other.companyname);
+                        assert.equal(resp.data.jobdata.other.companytel, update.jobdata.other.companytel);
+                        assert.equal(resp.data.jobdata.other.companylocation, update.jobdata.other.companylocation);
+                        assert.equal(resp.data.jobdata.other.companylocationdetail, update.jobdata.other.companylocationdetail);
+                        assert.equal(resp.data.jobdata.other.experience, update.jobdata.other.experience);
+                        assert.equal(resp.data.jobdata.other.position, update.jobdata.other.position);
+                        assert.equal(resp.data.jobdata.other.degree, update.jobdata.other.degree);
+                        assert.equal(resp.data.jobdata.other.salary, update.jobdata.other.salary);
+                        assert.equal(resp.data.jobdata.other.otherimage[0].url, update.jobdata.other.otherimage[0].url);
                         done();
                     });
             });
@@ -144,15 +257,15 @@ describe('Job CRUD routes tests', function () {
 
     });
 
-    it('should be job get not use token', (done)=>{
+    it('should be job get not use token', (done) => {
         request(app)
-        .get('/api/jobs')
-        .expect(403)
-        .expect({
-            status: 403,
-            message: 'User is not authorized'
-        })
-        .end(done);
+            .get('/api/jobs')
+            .expect(403)
+            .expect({
+                status: 403,
+                message: 'User is not authorized'
+            })
+            .end(done);
     });
 
     it('should be job post not use token', function (done) {

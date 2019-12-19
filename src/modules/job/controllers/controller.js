@@ -34,6 +34,7 @@ exports.getList = function (req, res) {
 exports.create = function (req, res) {
     var newJob = new Job (req.body);
     newJob.createby = req.user;
+    newJob.u_id = req.user.username;
     newJob.save(function (err, data) {
         if (err) {
             return res.status(400).send({
