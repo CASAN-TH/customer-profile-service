@@ -5,9 +5,11 @@ var Schema = mongoose.Schema;
 
 
 var MarriageSchema = new Schema({
-    name: {
-        type: String,
-        required: 'Please fill a Marriage name',
+    u_id: {
+        type: String
+    },
+    marriage: {
+        type: String
     },
     created: {
         type: Date,

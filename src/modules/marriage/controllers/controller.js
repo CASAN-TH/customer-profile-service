@@ -16,24 +16,25 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-        Marriage.find({}, {}, query, function (err, datas) {
-            if (err) {
-                return res.status(400).send({
-                    status: 400,
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp({
-                    status: 200,
-                    data: datas
-                });
-            };
-        });
+    Marriage.find({}, {}, query, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: datas
+            });
+        };
+    });
 };
 
 exports.create = function (req, res) {
-    var newMarriage = new Marriage (req.body);
+    var newMarriage = new Marriage(req.body);
     newMarriage.createby = req.user;
+    newMarriage.u_id = req.user.username;
     newMarriage.save(function (err, data) {
         if (err) {
             return res.status(400).send({
@@ -73,6 +74,30 @@ exports.getByID = function (req, res, next, id) {
             next();
         };
     });
+};
+
+exports.getByUserId = function (req, res, next) {
+    Marriage.findOne({ u_id: req.user.username }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                massage: errorHandler.getErrorMessage(err)
+            })
+        } else {
+            req.data = data;
+            next();
+        }
+    });
+};
+
+exports.returnData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.data ? req.data : {
+            "u_id": "",
+            "marriage": ""
+        }
+    })
 };
 
 exports.read = function (req, res) {
