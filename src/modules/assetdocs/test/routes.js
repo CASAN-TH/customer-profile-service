@@ -59,7 +59,7 @@ describe('Assetdocs CRUD routes tests', function () {
             ]
         };
         credentials = {
-            username: 'username',
+            username: '0992436806',
             password: 'password',
             firstname: 'first name',
             lastname: 'last name',
@@ -329,6 +329,130 @@ describe('Assetdocs CRUD routes tests', function () {
                     .end(done);
             });
 
+    });
+
+    it('should be have AssetDocs data and get data by UserId', function (done) {
+        request(app)
+            .post('/api/assetdocss')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                request(app)
+                    .get('/api/assetdocsbyuserid')
+                    .set('Authorization', 'Bearer ' + token)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.data.u_id, credentials.username);
+                        assert.equal(resp.data.assetdocs[0].name, mockup.assetdocs[0].name);
+                        assert.equal(resp.data.assetdocs[0].images[0].url, mockup.assetdocs[0].images[0].url);
+                        assert.equal(resp.data.assetdocs[0].images[1].url, mockup.assetdocs[0].images[1].url);
+                        assert.equal(resp.data.assetdocs[1].name, mockup.assetdocs[1].name);
+                        assert.equal(resp.data.assetdocs[1].images[0].url, mockup.assetdocs[1].images[0].url);
+                        assert.equal(resp.data.assetdocs[2].name, mockup.assetdocs[2].name);
+                        assert.equal(resp.data.assetdocs[3].name, mockup.assetdocs[3].name);
+                        assert.equal(resp.data.assetdocs[4].name, mockup.assetdocs[4].name);
+                        assert.equal(resp.data.assetdocs[5].name, mockup.assetdocs[5].name);
+                        assert.equal(resp.data.assetdocs[6].name, mockup.assetdocs[6].name);
+                        done();
+                    });
+            });
+    });
+
+    it('should be not have AssetDocs data then get data blank', function (done) {
+        credentials = {
+            username: '09924368022233',
+            password: 'password',
+            firstname: 'unknow',
+            lastname: 'unknow',
+            email: 'test@email.com',
+            roles: ['user']
+        };
+        token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
+            expiresIn: 2 * 60 * 60 * 1000
+        });
+
+        var assetdocs1 = new Assetdocs({
+            "u_id": "099243680000",
+            "assetdocs": [
+                {
+                    "name": "เล่มทะเบียนรถยนต์",
+                    "images": [
+                        {
+                            "url": "http://www.fab.co.th/images/services/document/ex/cardocin.jpg"
+                        },
+                        {
+                            "url": "https://f.ptcdn.info/327/059/000/pdunxxs48pfwpv7r3lM-o.jpg"
+                        }
+                    ]
+                },
+                {
+                    "name": "เล่มทะเบียนรถจักรยานยนต์",
+                    "images": [
+                        {
+                            "url": "https://f.ptcdn.info/327/059/000/pdunxxs48pfwpv7r3lM-o.jpg"
+                        }
+                    ]
+                },
+                {
+                    "name": "หนังสือเดินทาง",
+                    "images": []
+                },
+                {
+                    "name": "ประกันชีวิต",
+                    "images": []
+                },
+                {
+                    "name": "เอกสารกรรมสิทธิ์ห้องชุด",
+                    "images": []
+                },
+                {
+                    "name": "รายได้ต่อเดือนของครอบครัว",
+                    "images": []
+                },
+                {
+                    "name": "ทะเบียนบ้าน",
+                    "images": []
+                }
+            ]
+        });
+
+        assetdocs1.save(function (err, data) {
+            request(app)
+                .get('/api/assetdocsbyuserid')
+                .set('Authorization', 'Bearer ' + token)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    var resp = res.body;
+                    assert.equal(resp.data.u_id, "");
+                    assert.equal(resp.data.assetdocs[0].name, mockup.assetdocs[0].name);
+                    assert.equal(resp.data.assetdocs[0].images.length, 0);
+                    assert.equal(resp.data.assetdocs[1].name, mockup.assetdocs[1].name);
+                    assert.equal(resp.data.assetdocs[1].images.length, 0);
+                    assert.equal(resp.data.assetdocs[2].name, mockup.assetdocs[2].name);
+                    assert.equal(resp.data.assetdocs[2].images.length, 0);
+                    assert.equal(resp.data.assetdocs[3].name, mockup.assetdocs[3].name);
+                    assert.equal(resp.data.assetdocs[3].images.length, 0);
+                    assert.equal(resp.data.assetdocs[4].name, mockup.assetdocs[4].name);
+                    assert.equal(resp.data.assetdocs[4].images.length, 0);
+                    assert.equal(resp.data.assetdocs[5].name, mockup.assetdocs[5].name);
+                    assert.equal(resp.data.assetdocs[5].images.length, 0);
+                    assert.equal(resp.data.assetdocs[6].name, mockup.assetdocs[6].name);
+                    assert.equal(resp.data.assetdocs[6].images.length, 0);
+                    done();
+                });
+        })
     });
 
     afterEach(function (done) {
