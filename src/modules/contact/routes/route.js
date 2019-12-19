@@ -14,6 +14,9 @@ module.exports = function (app) {
         .put(controller.update)
         .delete(controller.delete);
 
+    app.route('/api/contactbyuserid')
+        .get(controller.getByUserId, controller.returnData)
+
     app.param('contactId', controller.getByID);
 
     /**
