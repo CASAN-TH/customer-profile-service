@@ -89,6 +89,53 @@ describe('Customerprofile CRUD routes tests', function () {
                         assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
                         assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
                         assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                        assert.equal(resp.data.accountstatus, 'member');
+                        assert.equal(resp.data.citizen_id, mockup.citizen_id);
+                        assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
+                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.lastname, mockup.lastname);
+                        assert.equal(resp.data.gender, mockup.gender);
+                        assert.equal(resp.data.birthdate, mockup.birthdate);
+                        assert.equal(resp.data.addressbycard, mockup.addressbycard);
+                        assert.equal(resp.data.email, mockup.email);
+                        assert.equal(resp.data.address, mockup.address);
+                        done();
+                    });
+            });
+
+    });
+
+    it('should be Change Status', function (done) {
+
+        request(app)
+            .post('/api/customerprofiles')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                var body = {
+                    "accountstatus": "waitapprove"
+                }
+                request(app)
+                    .put('/api/changestatus')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(body)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        // console.log(resp.data)
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
+                        assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
+                        assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                        assert.equal(resp.data.accountstatus, body.accountstatus);
                         assert.equal(resp.data.citizen_id, mockup.citizen_id);
                         assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
                         assert.equal(resp.data.name, mockup.name);
@@ -119,6 +166,7 @@ describe('Customerprofile CRUD routes tests', function () {
                 assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
                 assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
                 assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                assert.equal(resp.data.accountstatus, 'member');
                 assert.equal(resp.data.citizen_id, mockup.citizen_id);
                 assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
                 assert.equal(resp.data.name, mockup.name);
@@ -177,6 +225,7 @@ describe('Customerprofile CRUD routes tests', function () {
                         assert.equal(resp.data.frontcardimaged.url, update.frontcardimaged.url);
                         assert.equal(resp.data.backcardimaged.url, update.backcardimaged.url);
                         assert.equal(resp.data.personwithcardimaged.url, update.personwithcardimaged.url);
+                        assert.equal(resp.data.accountstatus, 'member');
                         assert.equal(resp.data.citizen_id, update.citizen_id);
                         assert.equal(resp.data.citizenback_id, update.citizenback_id);
                         assert.equal(resp.data.name, update.name);
@@ -315,6 +364,7 @@ describe('Customerprofile CRUD routes tests', function () {
                         assert.equal(resp.data.frontcardimaged.url, mockup.frontcardimaged.url);
                         assert.equal(resp.data.backcardimaged.url, mockup.backcardimaged.url);
                         assert.equal(resp.data.personwithcardimaged.url, mockup.personwithcardimaged.url);
+                        assert.equal(resp.data.accountstatus, 'member');
                         assert.equal(resp.data.citizen_id, mockup.citizen_id);
                         assert.equal(resp.data.citizenback_id, mockup.citizenback_id);
                         assert.equal(resp.data.name, mockup.name);
@@ -379,6 +429,7 @@ describe('Customerprofile CRUD routes tests', function () {
                     assert.equal(resp.data.frontcardimaged.url, "");
                     assert.equal(resp.data.backcardimaged.url, "");
                     assert.equal(resp.data.personwithcardimaged.url, "");
+                    assert.equal(resp.data.accountstatus, 'member');
                     assert.equal(resp.data.citizen_id, "");
                     assert.equal(resp.data.citizenback_id, "");
                     assert.equal(resp.data.name, "");

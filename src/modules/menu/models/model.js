@@ -5,9 +5,18 @@ var Schema = mongoose.Schema;
 
 
 var MenuSchema = new Schema({
-    name: {
-        type: String,
-        required: 'Please fill a Menu name',
+    menus: {
+        type: [{
+            name: {
+                type: String
+            },
+            detail: {
+                type: String
+            },
+            image: {
+                type: String
+            }
+        }]
     },
     created: {
         type: Date,

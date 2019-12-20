@@ -104,6 +104,7 @@ exports.reternUserId = function (req, res) {
                 "url": ""
             },
             "u_id": "",
+            "accountstatus": "member",
             "citizen_id": "",
             "citizenback_id": "",
             "name": "",
@@ -115,6 +116,26 @@ exports.reternUserId = function (req, res) {
             "address": ""
         }
     });
+};
+
+exports.ReturnChangeStatus = function (req, res) {
+    var data = req.data
+    var statusUpdate = req.body.accountstatus;
+    data.accountstatus = statusUpdate
+
+    Customerprofile.findOneAndUpdate({ _id: data._id }, {accountstatus: statusUpdate}, { new: true }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: data ? data : {}
+            })
+        }
+    })
 };
 
 exports.read = function (req, res) {
