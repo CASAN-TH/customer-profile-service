@@ -16,23 +16,23 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-        Menu.find({}, {}, query, function (err, datas) {
-            if (err) {
-                return res.status(400).send({
-                    status: 400,
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp({
-                    status: 200,
-                    data: datas
-                });
-            };
-        });
+    Menu.find({}, {}, query, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: datas
+            });
+        };
+    });
 };
 
 exports.create = function (req, res) {
-    var newMenu = new Menu (req.body);
+    var newMenu = new Menu(req.body);
     newMenu.createby = req.user;
     newMenu.save(function (err, data) {
         if (err) {
@@ -82,23 +82,51 @@ exports.read = function (req, res) {
     });
 };
 
+exports.findMenu = function (req, res, next) {
+    var id = req.body._id;
+    var menus = req.data.menus;
+
+    var idxMenu = menus.findIndex(function (params) {
+        return params._id.toString() === id.toString();
+    });
+
+    req.data.menus[idxMenu] = req.body;
+    next();
+    // console.log(req.data)
+}
+
 exports.update = function (req, res) {
-    var updMenu = _.extend(req.data, req.body);
-    updMenu.updated = new Date();
-    updMenu.updateby = req.user;
-    updMenu.save(function (err, data) {
-        if (err) {
+    var data = req.data;
+    Menu.findOneAndUpdate({ _id: data._id }, data, {new: true}, function (err, resData) {
+        if(err){
             return res.status(400).send({
                 status: 400,
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
+                massage: errorHandler.getErrorMessage(err)
+            })
+        } else{
             res.jsonp({
                 status: 200,
-                data: data
-            });
-        };
+                data: resData ? resData : {}
+            })
+        }
     });
+
+    // var updMenu = _.extend(req.data, req.body);
+    // updMenu.updated = new Date();
+    // updMenu.updateby = req.user;
+    // updMenu.save(function (err, data) {
+    //     if (err) {
+    //         return res.status(400).send({
+    //             status: 400,
+    //             message: errorHandler.getErrorMessage(err)
+    //         });
+    //     } else {
+    //         res.jsonp({
+    //             status: 200,
+    //             data: data
+    //         });
+    //     };
+    // });
 };
 
 exports.delete = function (req, res) {

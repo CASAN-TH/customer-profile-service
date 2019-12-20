@@ -11,7 +11,8 @@ module.exports = function (app) {
 
     app.route(urlWithParam).all(policy.isAllowed)
         .get(controller.read)
-        .put(controller.update)
+        // .post(controller.addMenu, controller.returnData)
+        .put(controller.findMenu, controller.update)
         .delete(controller.delete);
 
     app.param('menuId', controller.getByID);
@@ -24,6 +25,6 @@ module.exports = function (app) {
      */
     // mq.consume('exchange', 'qname', 'keymsg', (msg)=>{
     //     console.log(JSON.parse(msg.content));
-        
+
     // });
 }
