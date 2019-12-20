@@ -26,6 +26,11 @@ var CustomerprofileSchema = new Schema({
             }
         }
     },
+    accountstatus: {
+        type: String,
+        enum: ['member','waitapprove','approve'],
+        default: 'member'
+    },
     u_id: {
         type: String
     },
