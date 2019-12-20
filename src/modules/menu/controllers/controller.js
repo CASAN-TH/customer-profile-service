@@ -95,15 +95,15 @@ exports.findMenu = function (req, res, next) {
     // console.log(req.data)
 }
 
-exports.update = function (req, res) {
+exports.returnUpdate = function (req, res) {
     var data = req.data;
-    Menu.findOneAndUpdate({ _id: data._id }, data, {new: true}, function (err, resData) {
-        if(err){
+    Menu.findOneAndUpdate({ _id: data._id }, data, { new: true }, function (err, resData) {
+        if (err) {
             return res.status(400).send({
                 status: 400,
                 massage: errorHandler.getErrorMessage(err)
             })
-        } else{
+        } else {
             res.jsonp({
                 status: 200,
                 data: resData ? resData : {}
@@ -128,6 +128,15 @@ exports.update = function (req, res) {
     //     };
     // });
 };
+
+exports.addMenu = function (req, res, next) {
+    var menus = req.data.menus;
+    var body = req.body;
+    
+    menus.push(body)
+    req.data.munus = menus
+    next();
+}
 
 exports.delete = function (req, res) {
     req.data.remove(function (err, data) {

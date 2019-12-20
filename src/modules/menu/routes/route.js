@@ -11,8 +11,11 @@ module.exports = function (app) {
 
     app.route(urlWithParam).all(policy.isAllowed)
         .get(controller.read)
-        // .post(controller.addMenu, controller.returnData)
-        .put(controller.findMenu, controller.update)
+        .post(
+            controller.addMenu,
+            controller.returnUpdate
+        )
+        .put(controller.findMenu, controller.returnUpdate)
         .delete(controller.delete);
 
     app.param('menuId', controller.getByID);

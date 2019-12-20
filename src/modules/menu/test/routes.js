@@ -147,6 +147,57 @@ describe('Menu CRUD routes tests', function () {
             });
     });
 
+    it('should be Add Menus use token', (done) => {
+        request(app)
+            .post('/api/menus')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+
+                var body = {
+                    "name": "ข้อมูลการท่องเที่ยว",
+                    "detail": "เพิ่มวงเงินได้สูงสุด ต่อครั่งที่เที่ยว",
+                    "image": "travel.jpg"
+                }
+                request(app)
+                    .post('/api/menus/' + resp.data._id)
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(body)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.menus[0].name, mockup.menus[0].name);
+                        assert.equal(resp.data.menus[0].detail, mockup.menus[0].detail);
+                        assert.equal(resp.data.menus[0].image, mockup.menus[0].image);
+                        assert.equal(resp.data.menus[1].name, mockup.menus[1].name);
+                        assert.equal(resp.data.menus[1].detail, mockup.menus[1].detail);
+                        assert.equal(resp.data.menus[1].image, mockup.menus[1].image);
+                        assert.equal(resp.data.menus[2].name, mockup.menus[2].name);
+                        assert.equal(resp.data.menus[2].detail, mockup.menus[2].detail);
+                        assert.equal(resp.data.menus[2].image, mockup.menus[2].image);
+                        assert.equal(resp.data.menus[3].name, mockup.menus[3].name);
+                        assert.equal(resp.data.menus[3].detail, mockup.menus[3].detail);
+                        assert.equal(resp.data.menus[3].image, mockup.menus[3].image);
+                        assert.equal(resp.data.menus[4].name, mockup.menus[4].name);
+                        assert.equal(resp.data.menus[4].detail, mockup.menus[4].detail);
+                        assert.equal(resp.data.menus[4].image, mockup.menus[4].image);
+                        assert.equal(resp.data.menus[5].name, body.name);
+                        assert.equal(resp.data.menus[5].detail, body.detail);
+                        assert.equal(resp.data.menus[5].image, body.image);
+                        done();
+                    })
+            });
+    });
+
     it('should be menu put use token', function (done) {
 
         request(app)
