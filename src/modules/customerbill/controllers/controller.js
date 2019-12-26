@@ -75,6 +75,56 @@ exports.getByID = function (req, res, next, id) {
     });
 };
 
+exports.getByUserId = function (req, res, next) {
+    Customerbill.findOne({ u_id: req.user.username }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                massage: errorHandler.getErrorMessage(err)
+            })
+        } else {
+            req.data = data;
+            next();
+        }
+    });
+};
+
+exports.returnData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.data ? req.data : {
+            "u_id": "",
+            "bills": [
+                {
+                    "bill_month": "",
+                    "bill_status": "",
+                    "bill_price": "",
+                    "bill_datelimit": "",
+                    "bill_currency": "",
+                    "bill_products": [
+                        {
+                            "product_name": "",
+                            "product_amount": "",
+                            "product_currency": "",
+                            "product_allprice": "",
+                            "product_charge": "",
+                            "product_lists": [
+                                {
+                                    "list_amount": "",
+                                    "list_month": "",
+                                    "list_datelimit": "",
+                                    "list_price": "",
+                                    "list_charge": "" 
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    })
+};
+
 exports.read = function (req, res) {
     res.jsonp({
         status: 200,
