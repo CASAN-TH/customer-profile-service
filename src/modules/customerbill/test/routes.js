@@ -76,7 +76,7 @@ describe('Customerbill CRUD routes tests', function () {
             ]
         };
         credentials = {
-            username: 'username',
+            username: '0992436806',
             password: 'password',
             firstname: 'first name',
             lastname: 'last name',
@@ -161,6 +161,50 @@ describe('Customerbill CRUD routes tests', function () {
                         assert.equal(resp.data.bills[0].bill_products[1].product_lists[1].list_datelimit, mockup.bills[0].bill_products[1].product_lists[1].list_datelimit);
                         assert.equal(resp.data.bills[0].bill_products[1].product_lists[1].list_price, mockup.bills[0].bill_products[1].product_lists[1].list_price);
                         assert.equal(resp.data.bills[0].bill_products[1].product_lists[1].list_charge, mockup.bills[0].bill_products[1].product_lists[1].list_charge);
+                        done();
+                    });
+            });
+
+    });
+
+    it('should be have Customerbill get by User id', function (done) {
+
+        request(app)
+            .post('/api/customerbills')
+            .set('Authorization', 'Bearer ' + token)
+            .send(mockup)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                request(app)
+                    .get('/api/billbyuserid')
+                    .set('Authorization', 'Bearer ' + token)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        var resp = res.body;
+                        assert.equal(resp.status, 200);
+                        assert.equal(resp.data.u_id, "");
+                        assert.equal(resp.data.bills[0].bill_month, "");
+                        assert.equal(resp.data.bills[0].bill_status,"");
+                        assert.equal(resp.data.bills[0].bill_price, "");
+                        assert.equal(resp.data.bills[0].bill_datelimit, "");
+                        assert.equal(resp.data.bills[0].bill_currency, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_name, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_amount, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_currency, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_allprice, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_charge, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_lists[0].list_amount, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_lists[0].list_month, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_lists[0].list_datelimit, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_lists[0].list_price, "");
+                        assert.equal(resp.data.bills[0].bill_products[0].product_lists[0].list_charge, "");
                         done();
                     });
             });
