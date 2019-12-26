@@ -15,7 +15,8 @@ var CustomerbillSchema = new Schema({
                     type: String
                 },
                 bill_status: {
-                    type: String
+                    type: String,
+                    enum: ['billing', 'nobill']
                 },
                 bill_price: {
                     type: String
