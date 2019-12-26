@@ -16,7 +16,11 @@ describe('Creditpoint CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'name'
+            "u_id": "u001",
+            "credit": {
+                "creditstable": 10100,
+                "credittemporary": 0
+            }
         };
         credentials = {
             username: 'username',
@@ -32,18 +36,18 @@ describe('Creditpoint CRUD routes tests', function () {
         done();
     });
 
-    it('should be Creditpoint get use token', (done)=>{
+    it('should be Creditpoint get use token', (done) => {
         request(app)
-        .get('/api/creditpoints')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end((err, res)=>{
-            if (err) {
-                return done(err);
-            }
-            var resp = res.body;
-            done();
-        });
+            .get('/api/creditpoints')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                done();
+            });
     });
 
     it('should be Creditpoint get by id', function (done) {
@@ -68,14 +72,18 @@ describe('Creditpoint CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
-                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.u_id, mockup.u_id);
+                        assert.equal(resp.data.credit.creditremain, resp.data.credit.creditall);
+                        assert.equal(resp.data.credit.creditall, mockup.credit.creditstable + mockup.credit.credittemporary);
+                        assert.equal(resp.data.credit.creditstable, mockup.credit.creditstable);
+                        assert.equal(resp.data.credit.credittemporary, mockup.credit.credittemporary);
                         done();
                     });
             });
 
     });
 
-    it('should be Creditpoint post use token', (done)=>{
+    it('should be Creditpoint post use token', (done) => {
         request(app)
             .post('/api/creditpoints')
             .set('Authorization', 'Bearer ' + token)
@@ -86,7 +94,12 @@ describe('Creditpoint CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.status, 200);
+                assert.equal(resp.data.u_id, mockup.u_id);
+                assert.equal(resp.data.credit.creditremain, resp.data.credit.creditall);
+                assert.equal(resp.data.credit.creditall, mockup.credit.creditstable + mockup.credit.credittemporary);
+                assert.equal(resp.data.credit.creditstable, mockup.credit.creditstable);
+                assert.equal(resp.data.credit.credittemporary, mockup.credit.credittemporary);
                 done();
             });
     });
@@ -104,7 +117,13 @@ describe('Creditpoint CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    "u_id": "u001 update",
+                    "credit": {
+                        "creditremain": 8300,
+                        "creditall": 12000,
+                        "creditstable": 12000,
+                        "credittemporary": 0
+                    }
                 }
                 request(app)
                     .put('/api/creditpoints/' + resp.data._id)
@@ -116,7 +135,11 @@ describe('Creditpoint CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.data.u_id, update.u_id);
+                        assert.equal(resp.data.credit.creditremain, update.credit.creditremain);
+                        assert.equal(resp.data.credit.creditall, update.credit.creditall);
+                        assert.equal(resp.data.credit.creditstable, update.credit.creditstable);
+                        assert.equal(resp.data.credit.credittemporary, update.credit.credittemporary);
                         done();
                     });
             });
@@ -144,15 +167,15 @@ describe('Creditpoint CRUD routes tests', function () {
 
     });
 
-    it('should be creditpoint get not use token', (done)=>{
+    it('should be creditpoint get not use token', (done) => {
         request(app)
-        .get('/api/creditpoints')
-        .expect(403)
-        .expect({
-            status: 403,
-            message: 'User is not authorized'
-        })
-        .end(done);
+            .get('/api/creditpoints')
+            .expect(403)
+            .expect({
+                status: 403,
+                message: 'User is not authorized'
+            })
+            .end(done);
     });
 
     it('should be creditpoint post not use token', function (done) {

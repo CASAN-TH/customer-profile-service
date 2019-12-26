@@ -16,23 +16,25 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-        Creditpoint.find({}, {}, query, function (err, datas) {
-            if (err) {
-                return res.status(400).send({
-                    status: 400,
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp({
-                    status: 200,
-                    data: datas
-                });
-            };
-        });
+    Creditpoint.find({}, {}, query, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: datas
+            });
+        };
+    });
 };
 
 exports.create = function (req, res) {
-    var newCreditpoint = new Creditpoint (req.body);
+    var newCreditpoint = new Creditpoint(req.body);
+    newCreditpoint.credit.creditall = req.body.credit.creditstable + req.body.credit.credittemporary;
+    newCreditpoint.credit.creditremain = newCreditpoint.credit.creditall
     newCreditpoint.createby = req.user;
     newCreditpoint.save(function (err, data) {
         if (err) {

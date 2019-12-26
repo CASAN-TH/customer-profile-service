@@ -5,9 +5,24 @@ var Schema = mongoose.Schema;
 
 
 var CreditpointSchema = new Schema({
-    name: {
-        type: String,
-        required: 'Please fill a Creditpoint name',
+    u_id: {
+        type: String
+    },
+    credit: {
+        type: {
+            creditremain: {
+                type: Number
+            },
+            creditall: {
+                type: Number
+            },
+            creditstable: {
+                type: Number
+            },
+            credittemporary: {
+                type: Number
+            }
+        }
     },
     created: {
         type: Date,
