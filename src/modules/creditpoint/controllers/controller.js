@@ -77,6 +77,35 @@ exports.getByID = function (req, res, next, id) {
     });
 };
 
+exports.getByUserId = function (req, res, next) {
+    Creditpoint.findOne({ u_id: req.user.username }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                massage: errorHandler.getErrorMessage(err)
+            })
+        } else {
+            req.data = data;
+            next();
+        }
+    });
+};
+
+exports.returnData = function (req, res) {
+    res.jsonp({
+        status: 200,
+        data: req.data ? req.data : {
+            "u_id": "",
+            "credit": {
+            	"creditall": null,
+            	"creditremain": null,
+                "creditstable": null,
+                "credittemporary": null
+            }
+        }
+    })
+};
+
 exports.read = function (req, res) {
     res.jsonp({
         status: 200,
