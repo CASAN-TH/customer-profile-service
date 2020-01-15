@@ -16,23 +16,23 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-    Menu.find({}, {}, query, function (err, datas) {
-        if (err) {
-            return res.status(400).send({
-                status: 400,
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp({
-                status: 200,
-                data: datas
-            });
-        };
-    });
+        Menu.find({}, {}, query, function (err, datas) {
+            if (err) {
+                return res.status(400).send({
+                    status: 400,
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp({
+                    status: 200,
+                    data: datas
+                });
+            };
+        });
 };
 
 exports.create = function (req, res) {
-    var newMenu = new Menu(req.body);
+    var newMenu = new Menu (req.body);
     newMenu.createby = req.user;
     newMenu.save(function (err, data) {
         if (err) {
@@ -82,61 +82,24 @@ exports.read = function (req, res) {
     });
 };
 
-exports.findMenu = function (req, res, next) {
-    var id = req.body._id;
-    var menus = req.data.menus;
-
-    var idxMenu = menus.findIndex(function (params) {
-        return params._id.toString() === id.toString();
-    });
-
-    req.data.menus[idxMenu] = req.body;
-    next();
-    // console.log(req.data)
-}
-
-exports.returnUpdate = function (req, res) {
-    var data = req.data;
-    Menu.findOneAndUpdate({ _id: data._id }, data, { new: true }, function (err, resData) {
+exports.update = function (req, res) {
+    var updMenu = _.extend(req.data, req.body);
+    updMenu.updated = new Date();
+    updMenu.updateby = req.user;
+    updMenu.save(function (err, data) {
         if (err) {
             return res.status(400).send({
                 status: 400,
-                massage: errorHandler.getErrorMessage(err)
-            })
+                message: errorHandler.getErrorMessage(err)
+            });
         } else {
             res.jsonp({
                 status: 200,
-                data: resData ? resData : {}
-            })
-        }
+                data: data
+            });
+        };
     });
-
-    // var updMenu = _.extend(req.data, req.body);
-    // updMenu.updated = new Date();
-    // updMenu.updateby = req.user;
-    // updMenu.save(function (err, data) {
-    //     if (err) {
-    //         return res.status(400).send({
-    //             status: 400,
-    //             message: errorHandler.getErrorMessage(err)
-    //         });
-    //     } else {
-    //         res.jsonp({
-    //             status: 200,
-    //             data: data
-    //         });
-    //     };
-    // });
 };
-
-exports.addMenu = function (req, res, next) {
-    var menus = req.data.menus;
-    var body = req.body;
-    
-    menus.push(body)
-    req.data.munus = menus
-    next();
-}
 
 exports.delete = function (req, res) {
     req.data.remove(function (err, data) {

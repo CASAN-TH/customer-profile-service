@@ -16,33 +16,9 @@ describe('Menu CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            "menus": [
-                {
-                    "name": "ข้อมูลผู้ติดต่อ",
-                    "detail": "เพิ่มวงเงินได้สูงสุด B1000",
-                    "image": "../../../assets/images/menu/contact.png"
-                },
-                {
-                    "name": "สถานภาพสมรส",
-                    "detail": "เพิ่มวงเงินได้สูงสุด B2200",
-                    "image": "../../../assets/images/menu/marriage.png"
-                },
-                {
-                    "name": "บุคคลติดต่อฉุกเฉิน",
-                    "detail": "เพิ่มวงเงินได้สูงสุด B3000",
-                    "image": "../../../assets/images/menu/second.png"
-                },
-                {
-                    "name": "เอกสารสินทรัพย์",
-                    "detail": "เพิ่มวงเงินได้สูงสุด B2000",
-                    "image": "../../../assets/images/menu/asset.png"
-                },
-                {
-                    "name": "ข้อมูลอาชีพ",
-                    "detail": "เพิ่มวงเงินได้สูงสุด B5000",
-                    "image": "../../../assets/images/menu/job.png"
-                }
-            ]
+            name: 'ที่อยู่ติดต่อ',
+            detail: "เพิ่มวงเงินได้สูงสุด B1000",
+            image: "../../../assets/images/menu/contact.png"
         };
         credentials = {
             username: 'username',
@@ -93,22 +69,11 @@ describe('Menu CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
+                        console.log(resp.data)
                         assert.equal(resp.status, 200);
-                        assert.equal(resp.data.menus[0].name, mockup.menus[0].name);
-                        assert.equal(resp.data.menus[0].detail, mockup.menus[0].detail);
-                        assert.equal(resp.data.menus[0].image, mockup.menus[0].image);
-                        assert.equal(resp.data.menus[1].name, mockup.menus[1].name);
-                        assert.equal(resp.data.menus[1].detail, mockup.menus[1].detail);
-                        assert.equal(resp.data.menus[1].image, mockup.menus[1].image);
-                        assert.equal(resp.data.menus[2].name, mockup.menus[2].name);
-                        assert.equal(resp.data.menus[2].detail, mockup.menus[2].detail);
-                        assert.equal(resp.data.menus[2].image, mockup.menus[2].image);
-                        assert.equal(resp.data.menus[3].name, mockup.menus[3].name);
-                        assert.equal(resp.data.menus[3].detail, mockup.menus[3].detail);
-                        assert.equal(resp.data.menus[3].image, mockup.menus[3].image);
-                        assert.equal(resp.data.menus[4].name, mockup.menus[4].name);
-                        assert.equal(resp.data.menus[4].detail, mockup.menus[4].detail);
-                        assert.equal(resp.data.menus[4].image, mockup.menus[4].image);
+                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.detail, mockup.detail);
+                        assert.equal(resp.data.image, mockup.image);
                         done();
                     });
             });
@@ -126,75 +91,10 @@ describe('Menu CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                // console.log(resp.data)
-                assert.equal(resp.status, 200);
-                assert.equal(resp.data.menus[0].name, mockup.menus[0].name);
-                assert.equal(resp.data.menus[0].detail, mockup.menus[0].detail);
-                assert.equal(resp.data.menus[0].image, mockup.menus[0].image);
-                assert.equal(resp.data.menus[1].name, mockup.menus[1].name);
-                assert.equal(resp.data.menus[1].detail, mockup.menus[1].detail);
-                assert.equal(resp.data.menus[1].image, mockup.menus[1].image);
-                assert.equal(resp.data.menus[2].name, mockup.menus[2].name);
-                assert.equal(resp.data.menus[2].detail, mockup.menus[2].detail);
-                assert.equal(resp.data.menus[2].image, mockup.menus[2].image);
-                assert.equal(resp.data.menus[3].name, mockup.menus[3].name);
-                assert.equal(resp.data.menus[3].detail, mockup.menus[3].detail);
-                assert.equal(resp.data.menus[3].image, mockup.menus[3].image);
-                assert.equal(resp.data.menus[4].name, mockup.menus[4].name);
-                assert.equal(resp.data.menus[4].detail, mockup.menus[4].detail);
-                assert.equal(resp.data.menus[4].image, mockup.menus[4].image);
+                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.data.detail, mockup.detail);
+                assert.equal(resp.data.image, mockup.image);
                 done();
-            });
-    });
-
-    it('should be Add Menus use token', (done) => {
-        request(app)
-            .post('/api/menus')
-            .set('Authorization', 'Bearer ' + token)
-            .send(mockup)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err);
-                }
-                var resp = res.body;
-
-                var body = {
-                    "name": "ข้อมูลการท่องเที่ยว",
-                    "detail": "เพิ่มวงเงินได้สูงสุด ต่อครั่งที่เที่ยว",
-                    "image": "travel.jpg"
-                }
-                request(app)
-                    .post('/api/menus/' + resp.data._id)
-                    .set('Authorization', 'Bearer ' + token)
-                    .send(body)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err);
-                        }
-                        var resp = res.body;
-                        assert.equal(resp.status, 200);
-                        assert.equal(resp.data.menus[0].name, mockup.menus[0].name);
-                        assert.equal(resp.data.menus[0].detail, mockup.menus[0].detail);
-                        assert.equal(resp.data.menus[0].image, mockup.menus[0].image);
-                        assert.equal(resp.data.menus[1].name, mockup.menus[1].name);
-                        assert.equal(resp.data.menus[1].detail, mockup.menus[1].detail);
-                        assert.equal(resp.data.menus[1].image, mockup.menus[1].image);
-                        assert.equal(resp.data.menus[2].name, mockup.menus[2].name);
-                        assert.equal(resp.data.menus[2].detail, mockup.menus[2].detail);
-                        assert.equal(resp.data.menus[2].image, mockup.menus[2].image);
-                        assert.equal(resp.data.menus[3].name, mockup.menus[3].name);
-                        assert.equal(resp.data.menus[3].detail, mockup.menus[3].detail);
-                        assert.equal(resp.data.menus[3].image, mockup.menus[3].image);
-                        assert.equal(resp.data.menus[4].name, mockup.menus[4].name);
-                        assert.equal(resp.data.menus[4].detail, mockup.menus[4].detail);
-                        assert.equal(resp.data.menus[4].image, mockup.menus[4].image);
-                        assert.equal(resp.data.menus[5].name, body.name);
-                        assert.equal(resp.data.menus[5].detail, body.detail);
-                        assert.equal(resp.data.menus[5].image, body.image);
-                        done();
-                    })
             });
     });
 
@@ -211,10 +111,9 @@ describe('Menu CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    "_id": resp.data.menus[0]._id,
-                    "name": "Menu Update",
-                    "detail": "เพิ่มวงเงินได้สูงสุด Update",
-                    "image": "Update.jpg"
+                    name: 'update',
+                    detail: "update",
+                    image: "update"
                 }
                 request(app)
                     .put('/api/menus/' + resp.data._id)
@@ -226,22 +125,9 @@ describe('Menu CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.status, 200);
-                        assert.equal(resp.data.menus[0].name, update.name);
-                        assert.equal(resp.data.menus[0].detail, update.detail);
-                        assert.equal(resp.data.menus[0].image, update.image);
-                        assert.equal(resp.data.menus[1].name, mockup.menus[1].name);
-                        assert.equal(resp.data.menus[1].detail, mockup.menus[1].detail);
-                        assert.equal(resp.data.menus[1].image, mockup.menus[1].image);
-                        assert.equal(resp.data.menus[2].name, mockup.menus[2].name);
-                        assert.equal(resp.data.menus[2].detail, mockup.menus[2].detail);
-                        assert.equal(resp.data.menus[2].image, mockup.menus[2].image);
-                        assert.equal(resp.data.menus[3].name, mockup.menus[3].name);
-                        assert.equal(resp.data.menus[3].detail, mockup.menus[3].detail);
-                        assert.equal(resp.data.menus[3].image, mockup.menus[3].image);
-                        assert.equal(resp.data.menus[4].name, mockup.menus[4].name);
-                        assert.equal(resp.data.menus[4].detail, mockup.menus[4].detail);
-                        assert.equal(resp.data.menus[4].image, mockup.menus[4].image);
+                        assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.data.detail, update.detail);
+                        assert.equal(resp.data.image, update.image);
                         done();
                     });
             });
