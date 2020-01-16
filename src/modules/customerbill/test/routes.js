@@ -280,7 +280,7 @@ describe('Customerbill CRUD routes tests', function () {
                     "bills": [
                         {
                             "bill_month": "12/2019 update",
-                            "bill_status": "billing update",
+                            "bill_status": "billing",
                             "bill_price": "1,045.91 update",
                             "bill_datelimit": "28/12/2019 update",
                             "bill_currency": "฿ update",

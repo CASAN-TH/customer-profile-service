@@ -69,7 +69,6 @@ describe('Menu CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        console.log(resp.data)
                         assert.equal(resp.status, 200);
                         assert.equal(resp.data.name, mockup.name);
                         assert.equal(resp.data.detail, mockup.detail);
